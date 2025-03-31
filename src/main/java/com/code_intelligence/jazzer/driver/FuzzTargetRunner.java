@@ -299,6 +299,9 @@ public final class FuzzTargetRunner {
       byte[] crashData = data != null ? data : copyToArray(dataPtr, dataLength);
       boolean isFatal = fatalFindingDeterminatorForJUnit.test(crashData, finding);
       continueFuzzing = continueFuzzing && !isFatal;
+    } else {
+      continueFuzzing = continueFuzzing &&
+              (keepGoing == 0 || Long.compareUnsigned(ignoredTokens.size(), keepGoing) < 0);
     }
     if (isFuzzingFromCommandLine || continueFuzzing) {
       Log.finding(finding);
